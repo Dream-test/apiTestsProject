@@ -1,9 +1,9 @@
-package apiproject;
+package apiproject.tests;
 
 import apiproject.objects.PetStoreUser;
 import apiproject.utils.RandomGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.api.Assertions;
@@ -11,11 +11,10 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -126,11 +125,12 @@ public class SimpleRestApiTests {
     void simpleDeleteTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<PetStoreUser> usersList = objectMapper.readValue(new File("src/test/resources/users.json"), new TypeReference<List<PetStoreUser>>() {});
+        List<PetStoreUser> usersList = objectMapper.readValue(new File("src/test/resources/users.json"), new TypeReference<>() {
+        });
         int numberOfUsers = usersList.size();// Определяю количество строк - объектов
 
         RandomGenerator generator = new RandomGenerator();
-        //int index = 0;
+        //int index = 2;
         int index = generator.getIndex(numberOfUsers);//случайный индекс в диапазоне количества объектов
         logger.info("index: {}", index);
         PetStoreUser newUser = usersList.get(index);//выбираю один объект по индексу
@@ -165,7 +165,7 @@ public class SimpleRestApiTests {
         deleteResponse.statusCode(200);
 
 
-        ValidatableResponse getResponse = given()
+         given()
                 .when()
                 .get(newUserEndpoint)
                 .then()
@@ -180,7 +180,8 @@ public class SimpleRestApiTests {
     void postWithModelHamcrestAssertTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<PetStoreUser> usersList = objectMapper.readValue(new File("src/test/resources/users.json"), new TypeReference<List<PetStoreUser>>() {});
+        List<PetStoreUser> usersList = objectMapper.readValue(new File("src/test/resources/users.json"), new TypeReference<>() {
+        });
         int numberOfUsers = usersList.size();// Определяю количество строк - объектов
 
         RandomGenerator generator = new RandomGenerator();
@@ -212,7 +213,7 @@ public class SimpleRestApiTests {
         String newUserEndpoint = BASE_URL + "/user/" + username;
         logger.info("newUserEndpoint: {}", newUserEndpoint);
 
-        ValidatableResponse getResponse = given()
+        given()
                 .when()
                 .get(newUserEndpoint)
                 .then()
@@ -232,7 +233,8 @@ public class SimpleRestApiTests {
     void postWithModelSoftAssertTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<PetStoreUser> usersList = objectMapper.readValue(new File("src/test/resources/users.json"), new TypeReference<List<PetStoreUser>>() {});
+        List<PetStoreUser> usersList = objectMapper.readValue(new File("src/test/resources/users.json"), new TypeReference<>() {
+        });
         int numberOfUsers = usersList.size();// Определяю количество строк - объектов
 
         RandomGenerator generator = new RandomGenerator();
