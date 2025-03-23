@@ -1,7 +1,17 @@
 [
   {
     "id": 0,
-    "username": "legion212",
+    "username": "user1",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@gmail.com",
+    "password": "password123",
+    "phone": "1234567890",
+    "userStatus": 0
+  },
+  {
+    "id": 0,
+    "username": "Super_legion212",
     "firstName": "Valentin",
     "lastName": "Chromov",
     "email": "myemail@gmail.com",
@@ -11,22 +21,12 @@
   },
   {
     "id": 0,
-    "username": "user1",
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john.doe@gmail.com",
-    "password": "password123",
-    "phone": "1234567890",
-    "userStatus": 1
-  },
-  {
-    "id": 0,
-    "username": "user2",
+    "username": "user200",
     "firstName": "Jane",
     "lastName": "Smith",
     "email": "jane.smith@gmail.com",
     "password": "password456",
     "phone": "0987654321",
-    "userStatus": 0
+    "userStatus": 1
   }
 ]
