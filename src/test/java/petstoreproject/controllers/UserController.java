@@ -62,4 +62,17 @@ public class UserController {
         this.requestSpecification.body(updatedUser);
         return given(this.requestSpecification).put("user/" + username).andReturn();
     }
+
+    @Step("Add users by string")
+    public Response addStoreUsersByString(String allUsersAsString) {
+        this.requestSpecification.body(allUsersAsString);
+        return given(this.requestSpecification).post("user/createWithList").andReturn();
+    }
+
+    @Step("Delete all users by list")
+        public void deleteAllUsersByList (StoreUserList usersList) {
+        for (int i = 1; i < usersList.getNumberOfUsers(); i++) {
+            given(this.requestSpecification).delete("user/" + usersList.getByIndex(i).getUsername());
+        }
+    }
 }
