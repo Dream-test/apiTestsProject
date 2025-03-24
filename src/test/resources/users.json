@@ -1,7 +1,7 @@
 [
   {
     "id": 0,
-    "username": "user1",
+    "username": "user100",
     "firstName": "John",
     "lastName": "Doe",
     "email": "john.doe@gmail.com",
@@ -27,6 +27,16 @@
     "email": "jane.smith@gmail.com",
     "password": "password456",
     "phone": "0987654321",
+    "userStatus": 1
+  },
+  {
+    "id": 0,
+    "username": "user300",
+    "firstName": "Collin",
+    "lastName": "McGregor",
+    "email": "mcgregor2000@gmail.com",
+    "password": "password23azq",
+    "phone": "02394356782",
     "userStatus": 1
   }
 ]
