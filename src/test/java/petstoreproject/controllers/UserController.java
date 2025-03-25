@@ -18,7 +18,7 @@ import petstoreproject.utils.StoreUserList;
 import static io.restassured.RestAssured.given;
 
 public class UserController {
-    private final Logger logger = LoggerFactory.getLogger(StoreUserList.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
     TestConfig config = new TestConfig();
     RequestSpecification requestSpecification = given();
@@ -31,7 +31,7 @@ public class UserController {
         this.requestSpecification.filter(new AllureRestAssured());
     }
 
-    @Step("Add user")
+    @Step("Add new user")
     public Response addStoreUser (StoreUser user) {
         /* //Используется ObjectMapper для сериализации данных объекта user в строку json
         try {

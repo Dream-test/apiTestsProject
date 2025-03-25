@@ -91,15 +91,19 @@ public class StoreUser implements Serializable {
 
     @Override
     public String toString() {
-        return "StoreUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", userStatus=" + userStatus +
-                '}';
+        return String.format(
+                """
+                        StoreUser {
+                          id = %d,
+                          username = '%s',
+                          firstName = '%s',
+                          lastName = '%s',
+                          email = '%s',
+                          password = '%s',
+                          phone = '%s',
+                          userStatus = %d
+                        }""",
+                id, username, firstName, lastName, email, password, phone, userStatus
+        );
     }
 }
