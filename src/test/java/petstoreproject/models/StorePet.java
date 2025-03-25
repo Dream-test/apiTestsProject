@@ -11,11 +11,13 @@ public class StorePet {
     private List<Tag> tags;
     private String status;
 
+    public StorePet() {};
+
     public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -59,5 +61,25 @@ public class StorePet {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                """
+                StorePet{
+                  id = %d,
+                  category = %s,
+                  name = '%s',
+                  photoUrls = %s,
+                  tags = %s,
+                  status = '%s'
+                '}""",
+                id,
+                category != null ? category.toString() : "null",
+                name,
+                photoUrls != null ? photoUrls.toString() : "null",
+                tags != null ? tags.toString() : "null",
+                status
+        );
+    }
 }
 

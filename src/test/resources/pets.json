@@ -1,0 +1,75 @@
+[
+  {
+    "id": 899999999999999990,
+    "category": {
+      "id": 1,
+      "name": "Dogs"
+    },
+    "name": "Bars",
+    "photoUrls": [
+      "https://storage-api.petstory.ru/resize/1000x1000x80/cb/48/7f/cb487f4677a640329e92ac0076004607.jpeg",
+      "https://storage-api.petstory.ru/resize/0x0x100/97/c1/79/97c1790c33084854a9a9760bb34faf5b.jpeg"
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Friendly"
+      },
+      {
+        "id": 2,
+        "name": "Active"
+      },
+      {
+        "id": 3,
+        "name": "House-trained"
+      }
+    ],
+    "status": "available"
+  },
+  {
+    "id": 899999999999999980,
+    "category": {
+      "id": 2,
+      "name": "Cats"
+    },
+    "name": "Lisa",
+    "photoUrls": [
+      "https://storage-api.petstory.ru/resize/1000x1000x80/98/64/dd/9864ddf7dfbd4e7cbbf3f8538f18f753.jpeg",
+      "https://storage-api.petstory.ru/resize/0x0x100/62/fb/0f/62fb0fe85652407eaa22a33b5277d9e5.jpeg"
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Friendly"
+      },
+      {
+        "id": 2,
+        "name": "Active"
+      }
+    ],
+    "status": "available"
+  },
+  {
+    "id": 899999999999999970,
+    "category": {
+      "id": 3,
+      "name": "Rodents"
+    },
+    "name": "Mikky",
+    "photoUrls": [
+      "https://storage-api.petstory.ru/resize/1000x1000x80/cb/48/7f/cb487f4677a640329e92ac0076004607.jpeg",
+      "https://storage-api.petstory.ru/resize/0x0x100/97/c1/79/97c1790c33084854a9a9760bb34faf5b.jpeg"
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Friendly"
+      },
+      {
+        "id": 2,
+        "name": "Active"
+      }
+    ],
+    "status": "available"
+  }
+]

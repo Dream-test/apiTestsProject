@@ -15,7 +15,7 @@ import petstoreproject.utils.StoreUserList;
 
 import static java.lang.Thread.sleep;
 
-@Feature("ControllerTests")
+@Feature("UserControllerTests")
 @Epic("User API Tests")
 @Tag("api")
 public class UserApiTests {
@@ -70,7 +70,7 @@ public class UserApiTests {
         String actualUserFirstName = getResponse.jsonPath().getString("firstName");
         logger.info("checkGetUserTest ActualUserFirstName: {}", actualUserFirstName);
         logger.info("checkGetUserTest ExpectedUserFirstName: {}", storeUserList.getDefaultUser().getFirstName());
-        Assertions.assertThat(storeUserList.getDefaultUser().getFirstName()).isEqualTo(actualUserFirstName);
+        Assertions.assertThat(actualUserFirstName).isEqualTo(storeUserList.getDefaultUser().getFirstName());
         Assertions.assertThat(actualId).isEqualTo(expectedId);
         logger.info("checkGetUserTest Check status 200 and id when get user response body: {}", getResponse.prettyPrint());
     }
@@ -158,9 +158,10 @@ public class UserApiTests {
         logger.info("checkAddUsersByListTes Get user response after added users list statusCode: {}", getResponse.statusCode());
 
         String actualUserFirstName = getResponse.jsonPath().getString("firstName");
-        Assertions.assertThat(currentUserFirstName).isEqualTo(actualUserFirstName);
         logger.info("checkAddUsersByListTes ActualUserFirstName: {}", actualUserFirstName);
         logger.info("checkAddUsersByListTes Get user after added users list response body: {}", getResponse.prettyPrint());
+        Assertions.assertThat(actualUserFirstName).isEqualTo(currentUserFirstName);
+
 
         userController.deleteAllUsersByList(storeUserList);
     }
