@@ -9,7 +9,7 @@ public class StoreOrder {
     private String status;
     private boolean complete;
 
-    public StoreOrder() {};
+    public StoreOrder() {}
 
     public long getId() {
         return id;

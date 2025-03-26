@@ -13,8 +13,6 @@ import petstoreproject.controllers.UserController;
 import petstoreproject.models.StoreUser;
 import petstoreproject.utils.StoreUserList;
 
-import static java.lang.Thread.sleep;
-
 @Feature("UserControllerTests")
 @Epic("User API Tests")
 @Tag("api")
@@ -148,7 +146,7 @@ public class UserApiTests {
     @Test
     @Tag("extended")
     @DisplayName("Check status 200 and get one when add users by list")
-    void checkAddUsersByListTest() throws InterruptedException {
+    void checkAddUsersByListTest() {
         //Act
         Response response = userController.addStoreUsersByString(storeUserList.allUsersAsString());
         logger.info("checkAddUsersByListTes Add users by list response statusCode: {}", response.statusCode());

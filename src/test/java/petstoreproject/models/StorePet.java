@@ -11,7 +11,7 @@ public class StorePet {
     private List<Tag> tags;
     private String status;
 
-    public StorePet() {};
+    public StorePet() {}
 
     public long getId() {
         return id;

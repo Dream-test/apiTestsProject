@@ -1,6 +1,5 @@
 package petstoreproject.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -9,8 +8,6 @@ import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import petstoreproject.configurations.TestConfig;
 import petstoreproject.models.StoreUser;
 import petstoreproject.utils.StoreUserList;
@@ -18,8 +15,7 @@ import petstoreproject.utils.StoreUserList;
 import static io.restassured.RestAssured.given;
 
 public class UserController {
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    //private final ObjectMapper objectMapper = new ObjectMapper();
     TestConfig config = new TestConfig();
     RequestSpecification requestSpecification = given();
 
