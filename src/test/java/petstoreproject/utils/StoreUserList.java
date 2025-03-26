@@ -1,6 +1,5 @@
 package petstoreproject.utils;
 
-import apiproject.objects.PetStoreUser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -13,13 +12,13 @@ import java.util.List;
 
 public class StoreUserList {
     private final Logger logger = LoggerFactory.getLogger(StoreUserList.class);
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final String userFilePath = "src/test/resources/users.json";
     private List<StoreUser> usersList;
     private String jsonBody;
 
     public StoreUserList() {
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
             this.usersList = objectMapper.readValue(new File(userFilePath), new TypeReference<>() {});
             this.jsonBody = objectMapper.writeValueAsString(
                     objectMapper.readTree(new File(userFilePath)) // Читает JSON как дерево

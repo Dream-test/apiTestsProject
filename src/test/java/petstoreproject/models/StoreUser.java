@@ -12,7 +12,7 @@ public class StoreUser implements Serializable {
     private String phone;
     private int userStatus;
 
-    public StoreUser() {};
+    public StoreUser() {}
 
     public StoreUser(long id, String username, String firstName, String lastName, String email, String password, String phone, int userStatus) {
         this.id = id;

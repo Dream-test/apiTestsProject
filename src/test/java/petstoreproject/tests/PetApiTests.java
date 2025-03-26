@@ -13,8 +13,6 @@ import petstoreproject.controllers.PetController;
 import petstoreproject.models.StorePet;
 import petstoreproject.utils.StorePetsList;
 
-import static java.lang.Thread.sleep;
-
 @Feature("PetControllerTests")
 @Epic("Pet API Tests")
 @Tag("api")

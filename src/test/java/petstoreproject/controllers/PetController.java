@@ -46,5 +46,4 @@ public class PetController {
     public Response deletePetById(long petId) {
         return given(this.requestSpecification).delete("pet/" + petId).andReturn();
     }
-
 }
