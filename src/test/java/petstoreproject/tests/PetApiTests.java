@@ -32,17 +32,22 @@ public class PetApiTests {
         }
     }
 
-    @Story("Adding pet")
+    @Story("Add new pet")
     @Test
     @Tag("smoke")
     @DisplayName("Check status 200 when add pet")
     void checkAddPetTest() {
-        Response response = petController.addStorePet(storePetsList.getDefaultPet());
-        logger.info("checkAddPetTest Add pet response statusCode: {}", response.statusCode());
-        logger.info("checkAddPetTest Add pet response body: {}", response.prettyPrint());
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        //Arrange
+        StorePet currentPet = storePetsList.getDefaultPet();
+        long expectedId = currentPet.getId();
 
-        long expectedId = storePetsList.getDefaultPet().getId();
+        //Act
+        Response response = petController.addStorePet(currentPet);
+        logger.info("checkAddPetTest Add pet response statusCode: {}", response.statusCode());
+        logger.info("checkAddPetTest Add pet response body: {}", response.asString());
+
+        //Assert
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
         logger.info("checkAddPetTest Expected id: {}", expectedId);
         long actualId = Long.parseLong(response.jsonPath().getString("id"));
         logger.info("checkAddPetTest Actual id: {}", actualId);
@@ -54,19 +59,22 @@ public class PetApiTests {
     @Tag("smoke")
     @DisplayName("Check status 200 and id when get pet")
     void checkGetPetTest() {
+        //Arrange
         int index = randomGenerator.getIndex(storePetsList.getNumberOfPets());
         long expectedId = storePetsList.getPetByIndex(index).getId();
 
         Response response = petController.addStorePet(storePetsList.getPetByIndex(index));
         logger.info("checkGetPetTest Add pet response statusCode: {}", response.statusCode());
-        logger.info("checkGetPetTest Add response body: {}", response.prettyPrint());
+        logger.info("checkGetPetTest Add response body: {}", response.asString());
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
 
+        //Act
         Response getResponse = petController.getStorePetById(expectedId);
         logger.info("checkGetPetTest Get pet response statusCode: {}", getResponse.statusCode());
-        logger.info("checkGetPetTest Get pet response body: {}", getResponse.prettyPrint());
-        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
+        logger.info("checkGetPetTest Get pet response body: {}", getResponse.asString());
 
+        //Assert
+        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
         logger.info("checkGetPetTest Expected id: {}", expectedId);
         long actualId = Long.parseLong(getResponse.jsonPath().getString("id"));
         logger.info("checkGetPetTest Actual id: {}", actualId);
@@ -78,22 +86,28 @@ public class PetApiTests {
     @Tag("extended")
     @DisplayName("Check status 200 and object when get pet")
     void checkGetAndDataPetTest() {
+        //Arrange
         int index = randomGenerator.getIndex(storePetsList.getNumberOfPets());
-        long expectedId = storePetsList.getPetByIndex(index).getId();
+        StorePet currentPet = storePetsList.getPetByIndex(index);
+        long currentPetId = currentPet.getId();
 
-        Response response = petController.addStorePet(storePetsList.getPetByIndex(index));
+        Response response = petController.addStorePet(currentPet);
         logger.info("checkGetAndDataPetTest Add pet response statusCode: {}", response.statusCode());
-        logger.info("checkGetAndDataPetTest Add response body: {}", response.prettyPrint());
+        logger.info("checkGetAndDataPetTest Add response body: {}", response.asString());
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        logger.info("checkGetAndDataPetTest currentPetId id: {}", currentPetId);
 
-        logger.info("checkGetAndDataPetTest Expected id: {}", expectedId);
-        Response getResponse = petController.getStorePetById(expectedId);
+        //Act
+        Response getResponse = petController.getStorePetById(currentPetId);
         logger.info("checkGetAndDataPetTest Get pet response statusCode: {}", getResponse.statusCode());
-        logger.info("checkGetAndDataPetTest Get response body: {}", getResponse.prettyPrint());
-        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
+        logger.info("checkGetAndDataPetTest Get response body: {}", getResponse.asString());
 
+        //Assert
+        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
+        logger.info("checkGetAndDataPetTest currentPet: {}", currentPet);
         StorePet actualGetPet = response.as(StorePet.class);
-        Assertions.assertThat(actualGetPet).usingRecursiveComparison().isEqualTo(storePetsList.getPetByIndex(index));
+        logger.info("checkGetAndDataPetTest actualPet: {}", actualGetPet);
+        Assertions.assertThat(actualGetPet).usingRecursiveComparison().isEqualTo(currentPet);
     }
 
     @Story("Update pet by id")
@@ -101,6 +115,7 @@ public class PetApiTests {
     @Tag("smoke")
     @DisplayName("Check status 200 when update pet")
     void checkUpdateExistingPetTest() {
+        //Arrange
         int index = randomGenerator.getIndex(storePetsList.getNumberOfPets());
 
         Response response = petController.addStorePet(storePetsList.getPetByIndex(index));
@@ -113,9 +128,12 @@ public class PetApiTests {
         changedPet.setStatus("sold");
         logger.info("checkUpdateExistingPetTest Changed pet: {}", changedPet);
 
+        //Act
         Response putResponse = petController.updateStorePet(changedPet);
         logger.info("checkUpdateExistingPetTest Put pet response statusCode: {}", putResponse.statusCode());
         logger.info("checkUpdateExistingPetTest Put response body: {}", putResponse.asString());
+
+        //Assert
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
     }
 
@@ -124,6 +142,7 @@ public class PetApiTests {
     @Tag("extended")
     @DisplayName("Check status 200 and changed values when update pet")
     void checkUpdateValuesExistingPetTest() {
+        //Arrange
         int index = randomGenerator.getIndex(storePetsList.getNumberOfPets());
         StorePet currentPet = storePetsList.getPetByIndex(index);
         logger.info("checkUpdateValuesExistingPetTest Current pet: {}", currentPet);
@@ -138,9 +157,12 @@ public class PetApiTests {
         changedPet.setStatus("sold");
         logger.info("checkUpdateValuesExistingPetTest Changed pet: {}", changedPet);
 
+        //Act
         Response putResponse = petController.updateStorePet(changedPet);
         logger.info("checkUpdateValuesExistingPetTest Put pet response statusCode: {}", putResponse.statusCode());
         logger.info("checkUpdateValuesExistingPetTest Put response body: {}", putResponse.asString());
+
+        //Assert
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
 
         Response getResponse = petController.getStorePetById(changedPet.getId());
@@ -158,6 +180,7 @@ public class PetApiTests {
     @Tag("smoke")
     @DisplayName("Check status 200 when delete and 404 when get deleted pet")
     void checkDeletePetTest() {
+        //Arrange
         int index = randomGenerator.getIndex(storePetsList.getNumberOfPets());
         long currentId = storePetsList.getPetByIndex(index).getId();
 
@@ -166,14 +189,17 @@ public class PetApiTests {
         logger.info("checkDeletePetTes Add pet response body: {}", response.asString());
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
 
+        //Act
         Response deleteResponse = petController.deletePetById(currentId);
-        logger.info("checkDeletePetTes Delete pet response statusCode: {}", response.statusCode());
-        logger.info("checkDeletePetTes Delete pet response body: {}", response.asString());
+        logger.info("checkDeletePetTes Delete pet response statusCode: {}", deleteResponse.statusCode());
+        logger.info("checkDeletePetTes Delete pet response body: {}", deleteResponse.asString());
+
+        //Assert
         Assertions.assertThat(deleteResponse.statusCode()).isEqualTo(200);
 
         Response getResponse = petController.getStorePetById(currentId);
-        logger.info("checkDeletePetTes Get deleted pet response statusCode: {}", response.statusCode());
-        logger.info("checkDeletePetTes Get deleted pet response body: {}", response.asString());
+        logger.info("checkDeletePetTes Get deleted pet response statusCode: {}", getResponse.statusCode());
+        logger.info("checkDeletePetTes Get deleted pet response body: {}", getResponse.asString());
         Assertions.assertThat(getResponse.statusCode()).isEqualTo(404);
     }
 

@@ -3,7 +3,7 @@
     "id": 7,
     "petId": 899999999999999980,
     "quantity": 1,
-    "shipDate": "2025-03-25T13:29:52.176Z",
+    "shipDate": "2025-03-25T13:29:52.176+0000",
     "status": "placed",
     "complete": true
   },
@@ -11,7 +11,7 @@
     "id": 6,
     "petId": 899999999999999970,
     "quantity": 1,
-    "shipDate": "2025-03-24T12:40:52.176Z",
+    "shipDate": "2025-03-24T12:40:52.176+0000",
     "status": "approved",
     "complete": false
   },
@@ -19,7 +19,7 @@
     "id": 5,
     "petId": 899999999999999990,
     "quantity": 1,
-    "shipDate": "2025-03-22T10:20:40.176Z",
+    "shipDate": "2025-03-22T10:20:40.176+0000",
     "status": "delivered",
     "complete": true
   }

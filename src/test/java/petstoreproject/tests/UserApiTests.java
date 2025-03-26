@@ -26,15 +26,8 @@ public class UserApiTests {
 
     @BeforeEach
     @AfterEach
-    void cleanFirstUser() {
-        Response response = userController
-                .deleteUserByName(storeUserList.getDefaultUser().getUsername());
-        if ((response.statusCode()) == 200) {
-            logger.info("Clean default user: {}", response.prettyPrint());
-        } else {
-            logger.info("Enable clean default user status code: {}", response.statusCode());
-        }
-
+    void cleanTestUsers() {
+        userController.deleteAllUsersByList(storeUserList);
     }
 
     @Story("Adding user")
@@ -42,37 +35,51 @@ public class UserApiTests {
     @Tag("smoke")
     @DisplayName("Check status 200 when add user")
     void checkAddUserTest() {
-        Response response = userController.addStoreUser(storeUserList.getDefaultUser());
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        //Arrange
+        StoreUser currentUser = storeUserList.getDefaultUser();
+        logger.info("checkAddUserTest currentUser: {}", currentUser);
+
+        //Act
+        Response response = userController.addStoreUser(currentUser);
         logger.info("checkAddUserTest Add user response statusCode: {}", response.statusCode());
+        logger.info("checkAddUserTest Check status 200 when add user response: {}", response.asString());
+
+        //Assert
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
         Assertions.assertThat(response.jsonPath().getString("message")).isNotEqualTo("0");
-        logger.info("checkAddUserTest Check status 200 when add user response: {}", response.prettyPrint());
     }
 
     @Story("Get user by username")
     @Test
     @Tag("smoke")
     @DisplayName("Check status 200 and id when get user")
-    void checkGetUserTest() throws InterruptedException {
-        Response response = userController.addStoreUser(storeUserList.getDefaultUser());
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+    void checkGetUserTest() {
+        //Arrange
+        int index = randomGenerator.getIndex(storeUserList.getNumberOfUsers());
+        StoreUser currentUser = storeUserList.getByIndex(index);
+
+        Response response = userController.addStoreUser(currentUser);
         logger.info("checkGetUserTest Add user for get response statusCode: {}", response.statusCode());
         long expectedId = Long.parseLong(response.jsonPath().getString("message"));
-        logger.info("checkGetUserTest Added user id: {}", expectedId);
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
 
-        sleep(2000);
-
-        Response getResponse = userController.getUserByName(storeUserList.getDefaultUser().getUsername());
-        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
+        //Act
+        Response getResponse = userController.getUserByName(currentUser.getUsername());
         logger.info("checkGetUserTest Get user response statusCode: {}", getResponse.statusCode());
+        logger.info("checkGetUserTest Get user response body: {}", getResponse.asString());
+
+        //Assert
+        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
+        StoreUser actualUser = getResponse.as(StoreUser.class);
         long actualId = Long.parseLong(getResponse.jsonPath().getString("id"));
+
+        logger.info("checkGetUserTest Added user id: {}", expectedId);
         logger.info("checkGetUserTest Actual user id: {}", actualId);
-        String actualUserFirstName = getResponse.jsonPath().getString("firstName");
-        logger.info("checkGetUserTest ActualUserFirstName: {}", actualUserFirstName);
-        logger.info("checkGetUserTest ExpectedUserFirstName: {}", storeUserList.getDefaultUser().getFirstName());
-        Assertions.assertThat(actualUserFirstName).isEqualTo(storeUserList.getDefaultUser().getFirstName());
         Assertions.assertThat(actualId).isEqualTo(expectedId);
-        logger.info("checkGetUserTest Check status 200 and id when get user response body: {}", getResponse.prettyPrint());
+
+        logger.info("checkGetUserTest currentUser: {}", currentUser);
+        logger.info("checkGetUserTest actualUser: {}", actualUser);
+        Assertions.assertThat(actualUser).usingRecursiveComparison().ignoringFields("id").isEqualTo(currentUser);
     }
 
     @Story("Update user by username")
@@ -80,9 +87,10 @@ public class UserApiTests {
     @Tag("smoke")
     @DisplayName("Check status 200 when update user")
     void checkUpdateUserTest() {
+        //Arrange
         Response response = userController.addStoreUser(storeUserList.getDefaultUser());
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
         logger.info("checkUpdateUserTest Add user for update response statusCode: {}", response.statusCode());
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
 
         StoreUser updatingUser = storeUserList.getDefaultUser();
         String currentUsername = updatingUser.getUsername();
@@ -90,10 +98,13 @@ public class UserApiTests {
                 updatingUser.setEmail("alex50@gmail.com");
         logger.info("checkUpdateUserTest update user: {}", updatingUser);
 
+        //Act
         Response updateResponse = userController.updateUserByName(currentUsername,updatingUser);
-        Assertions.assertThat(updateResponse.statusCode()).isEqualTo(200);
         logger.info("checkUpdateUserTest Update response status code: {}", updateResponse.statusCode());
         logger.info("checkUpdateUserTest Update response body: {}", updateResponse.prettyPrint());
+
+        //Assert
+        Assertions.assertThat(updateResponse.statusCode()).isEqualTo(200);
 
         //Сервер не вносит изменений в БД при выполнении update - контроль изменений невозможен
     }
@@ -102,28 +113,35 @@ public class UserApiTests {
     @Test
     @Tag("smoke")
     @DisplayName("Check status 200 when delete user")
-    void checkDeleteUserTest() throws InterruptedException {
-        Response response = userController.addStoreUser(storeUserList.getDefaultUser());
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+    void checkDeleteUserTest() {
+        //Arrange
+        int index = randomGenerator.getIndex(storeUserList.getNumberOfUsers());
+        StoreUser currentUser = storeUserList.getByIndex(index);
+
+        Response response = userController.addStoreUser(currentUser);
         logger.info("checkDeleteUserTest Add user for delete response statusCode: {}", response.statusCode());
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
 
-        sleep(2000);
-
-        String deletingUserUsername = storeUserList.getDefaultUser().getUsername();
+        String deletingUserUsername = currentUser.getUsername();
         logger.info("checkDeleteUserTest Deleting StoreUser username: {}", deletingUserUsername);
-        Response deleteResponse = userController.deleteUserByName(deletingUserUsername);
-        Assertions.assertThat(deleteResponse.statusCode()).isEqualTo(200);
-        logger.info("checkDeleteUserTest Delete response status code: {}", deleteResponse.statusCode());
-        logger.info("checkDeleteUserTest Delete response body: {}", deleteResponse.prettyPrint());
 
-        sleep(2000);
+        //Act
+        Response deleteResponse = userController.deleteUserByName(deletingUserUsername);
+        logger.info("checkDeleteUserTest Delete response status code: {}", deleteResponse.statusCode());
+        logger.info("checkDeleteUserTest Delete response body: {}", deleteResponse.asString());
+        String deletedUsername = deleteResponse.jsonPath().getString("message");
+        logger.info("checkDeleteUserTest deletedUsername: {}", deletedUsername);
+
+       //Assert
+        Assertions.assertThat(deleteResponse.statusCode()).isEqualTo(200);
+        Assertions.assertThat(deletedUsername).isEqualTo(deletingUserUsername);
 
         Response getResponse = userController.getUserByName(deletingUserUsername);
-        Assertions.assertThat(getResponse.statusCode()).isEqualTo(404);
-        logger.info("checkDeleteUserTest Get response by username: {}", deletingUserUsername);
+        logger.info("checkDeleteUserTest Get response after deleting by username: {}", deletingUserUsername);
         logger.info("checkDeleteUserTest Get response after deleting status code: {}", getResponse.statusCode());
+        logger.info("checkDeleteUserTest Get response after deleting body: {}", getResponse.asString());
+        Assertions.assertThat(getResponse.statusCode()).isEqualTo(404);
         Assertions.assertThat((getResponse.jsonPath().getString("message")).contains("User not found")).isTrue();
-        logger.info("checkDeleteUserTest Get response after deleting body: {}", getResponse.prettyPrint());
     }
 
     @Story("Add users by list")
@@ -131,38 +149,28 @@ public class UserApiTests {
     @Tag("extended")
     @DisplayName("Check status 200 and get one when add users by list")
     void checkAddUsersByListTest() throws InterruptedException {
-
-        userController.deleteAllUsersByList(storeUserList);
-
+        //Act
         Response response = userController.addStoreUsersByString(storeUserList.allUsersAsString());
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
         logger.info("checkAddUsersByListTes Add users by list response statusCode: {}", response.statusCode());
         String addResponseMessage = response.jsonPath().getString("message");
-        Assertions.assertThat((addResponseMessage).contains("ok")).isTrue();
         logger.info("checkAddUsersByListTes Add users by list response message: {}", addResponseMessage);
 
-        int index = randomGenerator.getIndex(storeUserList.getNumberOfUsers());
-        String currentUsername = storeUserList
-                .getByIndex(index)
-                .getUsername();
-        logger.info("checkAddUsersByListTes CurrentUsername: {}", currentUsername);
-        String currentUserFirstName = storeUserList
-                .getByIndex(index)
-                .getFirstName();
-        logger.info("checkAddUsersByListTes CurrentUserFirstName: {}", currentUserFirstName);
+        //Assert
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        Assertions.assertThat((addResponseMessage).contains("ok")).isTrue();
 
-        sleep(2000);
+        int index = randomGenerator.getIndex(storeUserList.getNumberOfUsers());
+        StoreUser currentUser = storeUserList.getByIndex(index);
+        String currentUsername = currentUser.getUsername();
 
         Response getResponse = userController.getUserByName(currentUsername);
-        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
         logger.info("checkAddUsersByListTes Get user response after added users list statusCode: {}", getResponse.statusCode());
+        logger.info("checkAddUsersByListTes Get user after added users list response body: {}", getResponse.asString());
+        Assertions.assertThat(getResponse.statusCode()).isEqualTo(200);
+        StoreUser actualUser = getResponse.as(StoreUser.class);
 
-        String actualUserFirstName = getResponse.jsonPath().getString("firstName");
-        logger.info("checkAddUsersByListTes ActualUserFirstName: {}", actualUserFirstName);
-        logger.info("checkAddUsersByListTes Get user after added users list response body: {}", getResponse.prettyPrint());
-        Assertions.assertThat(actualUserFirstName).isEqualTo(currentUserFirstName);
-
-
-        userController.deleteAllUsersByList(storeUserList);
+        logger.info("checkAddUsersByListTes CurrentUsername: {}", currentUsername);
+        logger.info("checkAddUsersByListTes ActualUser: {}", actualUser);
+        Assertions.assertThat(actualUser).usingRecursiveComparison().ignoringFields("id").isEqualTo(currentUser);
     }
 }

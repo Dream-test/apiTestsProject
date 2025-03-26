@@ -46,4 +46,12 @@ public class StoreUserList {
     public String allUsersAsString() {
         return jsonBody;
     }
+
+    public String[] usernames() {
+        String[] usernames = new String[usersList.size()];
+        for (int i = 0; i < usersList.size(); i++) {
+            usernames[i] = usersList.get(i).getUsername();
+        }
+        return usernames;
+    }
 }
