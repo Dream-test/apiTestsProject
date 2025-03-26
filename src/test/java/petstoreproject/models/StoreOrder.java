@@ -1,6 +1,6 @@
 package petstoreproject.models;
 
-public class Order {
+public class StoreOrder {
 
     private long id;
     private long petId;
@@ -8,6 +8,8 @@ public class Order {
     private String shipDate;
     private String status;
     private boolean complete;
+
+    public StoreOrder() {};
 
     public long getId() {
         return id;
@@ -55,6 +57,22 @@ public class Order {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                """
+                        StoreUser {
+                          id = %d,
+                          petId = %d,
+                          quantity = %d,
+                          shipDate = '%s',
+                          status = '%s',
+                          complete = %b
+                        }""",
+                id, petId, quantity, shipDate, status, complete
+        );
     }
 
 }
